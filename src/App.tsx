@@ -1,35 +1,28 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, type ChangeEvent } from "react";
+import PdfViewer from "./components/PdfViewer";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [buffer, setBuffer] = useState<ArrayBuffer | null>(null);
+  const handlePdfLoad = async (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const buf = await file.arrayBuffer();
+    setBuffer(buf);
+  };
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <input
+        type="file"
+        accept="application/pdf"
+        onChange={handlePdfLoad}
+        style={{ display: "block" }}
+      ></input>
+
+      {buffer && <PdfViewer buffer={buffer} />}
     </>
-  )
+  );
 }
 
-export default App
+export default App;
