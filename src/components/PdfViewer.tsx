@@ -1,14 +1,18 @@
 import { useEffect, useRef } from "react";
 import * as pdfjsLib from "pdfjs-dist";
 
-export default function PdfViewer({ buffer }: { buffer: ArrayBuffer }) {
+export default function PdfViewer({
+  pdf,
+  pno,
+}: {
+  pdf: pdfjsLib.PDFDocumentProxy;
+  pno: number;
+}) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const render = async () => {
-      const pdf = await pdfjsLib.getDocument({ data: buffer }).promise;
-      const page = await pdf.getPage(1);
-
+      const page = await pdf.getPage(pno);
       const viewport = page.getViewport({ scale: 1.5 });
       const canvas = canvasRef.current!;
       const ctx = canvas.getContext("2d")!;
@@ -17,7 +21,7 @@ export default function PdfViewer({ buffer }: { buffer: ArrayBuffer }) {
       await page.render({ canvasContext: ctx, canvas, viewport }).promise;
     };
     render();
-  }, [buffer]);
+  }, [pdf, pno]);
 
   return <canvas ref={canvasRef} />;
 }
