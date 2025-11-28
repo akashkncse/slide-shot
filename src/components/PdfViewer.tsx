@@ -11,8 +11,10 @@ export default function PdfViewer({
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
+    let ignore = false;
     const render = async () => {
       const page = await pdf.getPage(pno);
+      if (ignore) return;
       const viewport = page.getViewport({ scale: 1.5 });
       const canvas = canvasRef.current!;
       const ctx = canvas.getContext("2d")!;
@@ -21,6 +23,10 @@ export default function PdfViewer({
       await page.render({ canvasContext: ctx, canvas, viewport }).promise;
     };
     render();
+
+    return () => {
+      ignore = true;
+    };
   }, [pdf, pno]);
 
   return <canvas ref={canvasRef} />;
