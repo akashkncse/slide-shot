@@ -5,7 +5,9 @@
 
 }
 .viewer {
-    height: 650px;
+    border:2px solid red;
+    box-sizing: border-box;
+    height: 100vh;
 }
 .parentviewer {
     display: flex;
@@ -18,4 +20,32 @@
     height: auto;
     display: block;
     border: 2px solid red;
+}
+.controls
+{
+    display: flex;
+    justify-content: space-between;
+}
+.fileinput
+{
+    border: 3px solid blue;
+    padding: 4px;
+    margin: 4px;
+}
+.navigation 
+{
+    border: 3px solid blue;
+    padding: 4px;
+    margin: 4px;
+    display: flex;
+    gap: 4px;
+}
+.navigation * {
+    padding: 4px
+}
+.navigation button {
+    border: 3px solid black;
+    font-weight: bold;
+}
+.nopg {
 }

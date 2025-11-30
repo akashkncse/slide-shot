@@ -3,19 +3,19 @@ import * as pdfjsLib from "pdfjs-dist";
 
 export default function PdfViewer({
   pdf,
-  pno,
+  pageNumber,
 }: {
   pdf: pdfjsLib.PDFDocumentProxy;
-  pno: number;
+  pageNumber: number;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     let ignore = false;
     const render = async () => {
-      const page = await pdf.getPage(pno);
+      const page = await pdf.getPage(pageNumber);
       if (ignore) return;
-      const viewport = page.getViewport({ scale: 1.5 });
+      const viewport = page.getViewport({ scale: 2 });
       const canvas = canvasRef.current!;
       const ctx = canvas.getContext("2d")!;
       canvas.width = viewport.width;
@@ -27,7 +27,7 @@ export default function PdfViewer({
     return () => {
       ignore = true;
     };
-  }, [pdf, pno]);
+  }, [pdf, pageNumber]);
 
   return <canvas ref={canvasRef} />;
 }
